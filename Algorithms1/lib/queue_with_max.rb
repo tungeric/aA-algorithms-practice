@@ -31,16 +31,21 @@ class QueueWithMax
 
   def dequeue
     first_item = @store.shift
-    new_sorted_store = RingBuffer.new
-    i = 0
-    while i < @sorted_store.length
-      el = @sorted_store[i]
-      if el != first_item
-        new_sorted_store.push(el)
+    if first_item == @sorted_store[-1]
+      @sorted_store.pop
+    else
+      new_sorted_store = RingBuffer.new
+      i = 0
+      while i < @sorted_store.length
+        el = @sorted_store[i]
+        if el != first_item
+          new_sorted_store.push(el)
+        end
+        i+=1
       end
-      i+=1
+      @sorted_store = new_sorted_store
     end
-    @sorted_store = new_sorted_store
+    @sorted_store
   end
 
   def max
